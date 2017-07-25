@@ -1,0 +1,53 @@
+<IfModule mod_headers.c>
+    <FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|woff)$">
+        Header set Cache-Control "max-age=2592000"
+    </FilesMatch>
+</IfModule>
+
+<ifModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+</ifModule>
+
+<IfModule mod_rewrite.c> 
+		RewriteEngine on
+		RewriteCond %{REQUEST_URI} !^public
+		
+		# Redirects START
+		RewriteRule ^(.*)/$ /$1 [L,R=301]
+		
+		RewriteRule ^ru/glavnaya/kopiya-o-kompanii.html$ /about [L,R=301]
+		RewriteRule ^main/o-kompanii.html$ /ua/about [L,R=301]
+		RewriteRule ^ru/news$ /blog [L,R=301]
+		RewriteRule ^news$ /ua/blog [L,R=301]
+		RewriteRule ^ru/katalog/kosmetika.html$ /cosmetic [L,R=301]
+		RewriteRule ^catalog/kosmetika$ /ua/cosmetic [L,R=301]
+		RewriteRule ^ru/katalog/oborudovanie$ /equipment [L,R=301]
+		RewriteRule ^catalog/oborudovanie$ /ua/equipment [L,R=301]
+		RewriteRule ^ru/portfolio/salonyi$ /portfolio/salony [L,R=301]
+		RewriteRule ^portfolio/salonyi$ /ua/portfolio/salony [L,R=301]
+		RewriteRule ^ru/uslugi/servis-ru.html$ /service-center [L,R=301]
+		RewriteRule ^uslugi/servis.html$ /ua/service-center [L,R=301]
+		RewriteRule ^ru/kontaktyi/ofis.html$ /contacts [L,R=301]
+		RewriteRule ^kontaktyi/ofis.html$ /ua/contacts [L,R=301]
+		
+		# Redirects END
+		
+        RewriteCond $1 !^(userfiles/)
+		RewriteCond $1 !^(images/)
+		RewriteCond $1 !^(adminer/)
+        RewriteRule ^(.*)$ web/$1 [L] 
+        RewriteRule ^/?images(.*)  /web/images/$1
+        RewriteRule ^/?userfiles(.*)  /web/userfiles/$1
+</IfModule>
+
+
+
+
+# Deny accessing below extensions
+<Files ~ "(.json|.lock|.git)">
+Order allow,deny
+Deny from all
+</Files>
+
+# Deny accessing dot files
+RewriteRule (^\.|/\.) - [F]
